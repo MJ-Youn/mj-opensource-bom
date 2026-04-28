@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>9</version>
+	</parent>
+
+	<groupId>io.github.mj-youn</groupId>
+	<artifactId>bom</artifactId>
+	<version>25.4.7.0</version> <!-- '-SNAPSHOT'으로 끝나면 snapshot, 아닐 경우 release로 배포됨 -->
+	<packaging>pom</packaging>
+
+	<name>io.github.mj-youn.bom</name>
+	<description>BOM (Bill of Materials) for io.github.mj-youn projects</description>
+
+	<!-- Developer info -->
+	<developers>
+		<developer>
+			<id>yun0244</id>
+			<name>MJ Youn</name>
+			<email>yun0244@naver.com</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<organization>MJ Youn</organization>
+			<organizationUrl>http://mj-youn.github.io</organizationUrl>
+		</developer>
+	</developers>
+
+	<!-- License -->
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>https://opensource.org/licenses/MIT</url>
+		</license>
+	</licenses>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.github.mj-youn</groupId>
+				<artifactId>core</artifactId>
+				<version>25.4.7-20260428.0</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.mj-youn</groupId>
+				<artifactId>spring</artifactId>
+				<version>25.4.7-20260428.1</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.mj-youn</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>25.4.7-20260428.1</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.mj-youn</groupId>
+				<artifactId>spring-database</artifactId>
+				<version>25.4.7-20260428.1</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<distributionManagement>
+		<!-- release publishing -->
+		<repository>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+		<!-- snapshot publishing -->
+		<snapshotRepository>
+			<id>central</id>
+			<name>Central Repository Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<build>
+		<plugins>
+			<!-- BEGIN: publishing -->
+			<plugin>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>0.7.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<publishingServerId>central</publishingServerId>
+				</configuration>
+			</plugin>
+			<!-- E N D: publishing -->
+			<!-- BEGIN: GPG 서명 설정 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>3.2.7</version>
+				<configuration>
+					<gpgArguments>
+						<arg>--pinentry-mode</arg>
+						<arg>loopback</arg>
+					</gpgArguments>
+				</configuration>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- E N D: GPG 서명 설정 -->
+		</plugins>
+	</build>
+</project>
