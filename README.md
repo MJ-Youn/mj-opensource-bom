@@ -1,3 +1,6 @@
+# This project is deprecated.
+[Moved Repository](https://github.com/MJ-Youn/opensource/tree/main/bom)
+
 # mj-opensource-bom
 
 - `io.github.mj-youn` 하위 프로젝트들의 의존성 버전을 중앙 집중적으로 관리하기 위한 BOM(Bill of Materials) 프로젝트입니다.
