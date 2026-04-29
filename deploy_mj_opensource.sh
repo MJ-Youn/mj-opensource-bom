@@ -3,7 +3,7 @@
 # Configuration
 # 스크립트가 위치한 곳의 상위 폴더(github 디렉토리)를 BASE_DIR로 설정
 BASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-BOM_DIR="$BASE_DIR/mj-opensource-bom"
+BOM_DIR="$BASE_DIR/bom"
 TODAY=$(date +%Y%m%d)
 
 # Colors
@@ -18,8 +18,11 @@ echo -e "${GREEN}🚀 시작: mj-opensource 자동 배포 스크립트${NC}"
 MODIFIED_PROJECTS=()
 cd "$BASE_DIR" || exit 1
 
-for dir in mj-opensource-*; do
-  if [ -d "$dir" ] && [ "$dir" != "mj-opensource-bom" ]; then
+# 수정 가능한 프로젝트 목록 (bom 제외)
+TARGET_PROJECTS=("core" "spring" "spring-database" "spring-web")
+
+for dir in "${TARGET_PROJECTS[@]}"; do
+  if [ -d "$dir" ]; then
     cd "$dir" || continue
     # git status --porcelain 출력 결과가 있으면 수정된 것으로 간주
     if [ -n "$(git status --porcelain)" ]; then
@@ -91,7 +94,8 @@ for PROJECT in "${MODIFIED_PROJECTS[@]}"; do
   perl -pi -e "s/<version>$CURRENT_BOM_VERSION<\/version>/<version>$NEW_BOM_VERSION<\/version>/g" "$POM_FILE"
   
   # BOM pom.xml 안에 선언된 해당 프로젝트의 의존성 버전 치환
-  ARTIFACT_NAME=${PROJECT#mj-opensource-}
+  # 폴더명(예: spring-web)이 곧 artifactId 이므로 그대로 사용합니다.
+  ARTIFACT_NAME="$PROJECT"
   perl -0777 -pi -e "s/(<artifactId>$ARTIFACT_NAME<\/artifactId>\s*<version>)[^<]+(<\/version>)/\${1}${NEW_VERSION}\${2}/g" "$BOM_POM"
   
   # README.md 작성 프로세스
