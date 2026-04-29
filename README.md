@@ -8,3 +8,7 @@
 
 - BOM 프로젝트 최초 생성
 - 하위 프로젝트(`core`, `spring`, `spring-database`, `spring-web`) 버전 일원화 연동
+
+### 25.4.7.1 - 20260429
+
+- 하위 프로젝트 버전 변경 (spring, spring-database)
